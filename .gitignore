@@ -14,8 +14,9 @@ tmp/
 *~.nib
 local.properties
 
-### Environment file ###
+### Environment & cmd files ###
 .env
+.curlcommands
 *.log
 
 ### STS ###
