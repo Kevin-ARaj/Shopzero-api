@@ -2,6 +2,9 @@ package com.example.app.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.example.app.services.UserService;
+import com.example.app.config.JwtUtil;
+import com.example.app.dto.LoginRequest;
+import com.example.app.dto.LoginResponse;
 import com.example.app.dto.UserRequest;
 import com.example.app.dto.UserResponse;
 import com.example.app.entity.User;
@@ -18,7 +21,9 @@ public class UserController {
 	@Autowired
 	private UserService serv;
 	
-	static void justprint() {System.out.println("controller hit");} //debug
+	@Autowired
+	private JwtUtil jwtUtil;
+	
 	
 	@PostMapping("/register")
 	public UserResponse register(@Valid @RequestBody UserRequest request) {
@@ -88,4 +93,18 @@ public class UserController {
 		serv.deleteUser(id);
 		return org.springframework.http.ResponseEntity.ok("user deleted");
 	} 
+	
+	@PostMapping("/login")
+	public LoginResponse login(@RequestBody LoginRequest request) {
+		User user = serv.login(request.getEmail(), request.getPassword());
+		
+		String token = jwtUtil.generateTokens(user.getEmail());
+		LoginResponse res = new LoginResponse();
+		res.setId(user.getId());
+		res.setName(user.getName());
+		res.setEmail(user.getEmail());
+		res.setToken(token);
+		
+		return res;
+	}
 }
