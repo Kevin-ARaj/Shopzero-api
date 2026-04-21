@@ -5,6 +5,7 @@ import com.example.app.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class OrderService {
     private CartRepository cartRepository;
 
     public Orders placeOrder(User user) {
-
+    	
         List<Cart> cartItems = cartRepository.findByUser(user);
 
         if (cartItems.isEmpty()) {
@@ -26,13 +27,17 @@ public class OrderService {
         }
 
         double total = 0;
-
+        
+        List<Product> bought = new ArrayList<>();
+        
         for (Cart item : cartItems) {
+        	bought.add(item.getProduct());
             total += item.getProduct().getPrice() * item.getQuantity();
         }
 
         Orders order = new Orders();
         order.setUser(user);
+        order.setProducts(bought);
         order.setOrderDate(new Date());
         order.setTotalAmount(total);
 

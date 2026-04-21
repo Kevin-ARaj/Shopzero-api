@@ -30,8 +30,9 @@ public class JwtFilter extends GenericFilterBean {
         HttpServletResponse res = (HttpServletResponse) response;
         	
         String path = req.getRequestURI();
+        String method = req.getMethod();
 
-        if (path.contains("/api/user/login") || path.contains("/api/user/register")) {
+        if (path.equals("/api/user/login") || path.equals("/api/user/register") || path.equals("/api/products") && method.equals("GET")) {
             chain.doFilter(request, response);
             return;
         }

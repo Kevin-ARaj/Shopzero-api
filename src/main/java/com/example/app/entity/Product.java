@@ -24,6 +24,43 @@ public class Product {
 	@Positive
 	private double price;
 	
+	private String image;
+	private double discount;
+	private boolean availablity;
+	private String brand;
+	private int rating; 
+	
+	
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public double getDiscount() {
+		return discount;
+	}
+	public void setDiscount(double discount) {
+		this.discount = discount;
+	}
+	public boolean isAvailablity() {
+		return availablity;
+	}
+	public void setAvailablity(boolean availablity) {
+		this.availablity = availablity;
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
 	public Long getId() {
 		return id;
 	}

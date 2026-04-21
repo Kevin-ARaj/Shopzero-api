@@ -6,8 +6,10 @@ import com.example.app.services.CartService;
 import com.example.app.services.UserService;
 import com.example.app.config.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -23,9 +25,7 @@ public class CartController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/{productId}")
-    public Cart addToCart(@PathVariable Long productId,
-                          @RequestParam int quantity,
-                          @RequestHeader("Authorization") String header) {
+    public Cart addToCart(@PathVariable Long productId,@RequestParam int quantity,@RequestHeader("Authorization") String header) {
 
         String token = header.substring(7);
         String email = jwtUtil.extractEmail(token);
@@ -49,7 +49,7 @@ public class CartController {
 
     
     @DeleteMapping("/{cartId}")
-    public String removeFromCart(@PathVariable Long cartId,
+    public ResponseEntity<Map<String,String>> removeFromCart(@PathVariable Long cartId,
                                  @RequestHeader("Authorization") String header) {
 
         String token = header.substring(7);
@@ -59,7 +59,7 @@ public class CartController {
 
         cartService.removeFromCart(cartId, user);
 
-        return "Item removed";
+        return ResponseEntity.ok(Map.of("Message","Item deleted"));
     }
 
  

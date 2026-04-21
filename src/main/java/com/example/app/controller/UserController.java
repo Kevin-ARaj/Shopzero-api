@@ -26,7 +26,7 @@ public class UserController {
 	
 	
 	@PostMapping("/register")
-	public UserResponse register(@Valid @RequestBody UserRequest request) {
+	public LoginResponse register(@Valid @RequestBody UserRequest request) {
 		
 		User user =  new User();
 		user.setName(request.getName());
@@ -35,11 +35,14 @@ public class UserController {
 		
 		User saveduser = serv.newuser(user);
 		
-		UserResponse response = new UserResponse();
+		String token = jwtUtil.generateTokens(user.getEmail());
+		
+		LoginResponse response = new LoginResponse();
 		
 		response.setId(saveduser.getId());
 		response.setName(saveduser.getName());
 		response.setEmail(saveduser.getEmail());
+		response.setToken(token);
 		
 		return response;
 	}

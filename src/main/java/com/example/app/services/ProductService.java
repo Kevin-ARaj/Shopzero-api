@@ -24,7 +24,7 @@ public class ProductService {
 	}
 	
 	public Product getproductbyid(Long id) {
-		return repo.findById(id).orElseThrow(() -> new resourceNotFoundException("Product ot found with id "+id));
+		return repo.findById(id).orElseThrow(() -> new resourceNotFoundException("Product not found with id "+id));
 	}
 	
 	public Product updateproduct(Long id, Product updatedprod,User user) {

@@ -1,6 +1,7 @@
 package com.example.app.entity;
 
 import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -12,8 +13,11 @@ public class Orders {
 
     @ManyToOne
     private User user;
+    
+    @ManyToMany
+    private java.util.List<Product> products;
 
-    private Date orderDate;
+	private Date orderDate;
 
     private double totalAmount;
 
@@ -28,4 +32,10 @@ public class Orders {
 
     public double getTotalAmount() { return totalAmount; }
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
+    
+	public java.util.List<Product> getProduct() {	return products;	}
+	public void setProducts(java.util.List<Product> products) {	this.products = products;	}
+	
+    
+    
 }
