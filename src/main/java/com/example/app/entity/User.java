@@ -14,6 +14,8 @@ public class User {
 	@NotBlank
 	private String name;
 	
+	private String role;
+	
 	@Email
 	@NotBlank
 	private String email;
@@ -54,6 +56,14 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 	

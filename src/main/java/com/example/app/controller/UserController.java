@@ -9,9 +9,10 @@ import com.example.app.dto.UserRequest;
 import com.example.app.dto.UserResponse;
 import com.example.app.entity.User;
 import jakarta.validation.Valid;
-
+import org.springframework.http.ResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
@@ -35,13 +36,14 @@ public class UserController {
 		
 		User saveduser = serv.newuser(user);
 		
-		String token = jwtUtil.generateTokens(user.getEmail());
+		String token = jwtUtil.generateTokens(user.getEmail(),user.getRole());
 		
 		LoginResponse response = new LoginResponse();
 		
 		response.setId(saveduser.getId());
 		response.setName(saveduser.getName());
 		response.setEmail(saveduser.getEmail());
+		response.setRole(saveduser.getRole());
 		response.setToken(token);
 		
 		return response;
@@ -92,20 +94,21 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public org.springframework.http.ResponseEntity<String> deleteuser(@PathVariable Long id) {
+	public ResponseEntity<Map<String,String>> deleteuser(@PathVariable Long id) {
 		serv.deleteUser(id);
-		return org.springframework.http.ResponseEntity.ok("user deleted");
+		return ResponseEntity.ok(Map.of("Message","Item deleted"));
 	} 
 	
 	@PostMapping("/login")
 	public LoginResponse login(@RequestBody LoginRequest request) {
 		User user = serv.login(request.getEmail(), request.getPassword());
 		
-		String token = jwtUtil.generateTokens(user.getEmail());
+		String token = jwtUtil.generateTokens(user.getEmail(),user.getRole());
 		LoginResponse res = new LoginResponse();
 		res.setId(user.getId());
 		res.setName(user.getName());
 		res.setEmail(user.getEmail());
+		res.setRole(user.getRole());
 		res.setToken(token);
 		
 		return res;

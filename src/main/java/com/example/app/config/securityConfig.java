@@ -3,6 +3,8 @@ package com.example.app.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.*;
 
 @Configuration
+@EnableMethodSecurity
 public class securityConfig {
 	
 	@Autowired
@@ -21,7 +24,10 @@ public class securityConfig {
 		http.cors(cors -> {});
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/api/user/register", "/api/user/login","/api/products").permitAll()
+            		.requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
+            		.requestMatchers("/api/cart/**").hasRole("USER")
+            		.requestMatchers("/api/orders/**").hasRole("USER")
+            		.requestMatchers("/api/user/register", "/api/user/login").permitAll()
                     .anyRequest().authenticated()
             )
             .addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);

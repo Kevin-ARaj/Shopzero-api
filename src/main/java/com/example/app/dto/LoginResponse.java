@@ -3,6 +3,7 @@ package com.example.app.dto;
 public class LoginResponse {
 	private String token;
 	private Long id;
+	private String role;
 	private String email;
 	private String name;
 	
@@ -29,6 +30,12 @@ public class LoginResponse {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	
 }

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.ResponseEntity;
+import java.util.Map;
 import com.example.app.config.JwtUtil;
 import com.example.app.dto.ProductResponse;
 import com.example.app.entity.Product;
@@ -28,6 +30,7 @@ public class ProductController {
 	@Autowired
 	private JwtUtil jwtutil;
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/add")
 	public ProductResponse addproduct(@Valid @RequestBody Product product,@RequestHeader("Authorization") String header) {
 		String token = header.substring(7);
@@ -98,6 +101,7 @@ public class ProductController {
 		return response;
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ProductResponse updateproduct(@PathVariable Long id,@Valid @RequestBody Product updatedprod,@RequestHeader("Authorization") String header) {
 		String token = header.substring(7);
@@ -120,14 +124,15 @@ public class ProductController {
 		return response;
 		
 	}
-
+	
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
-	public String deleteproduct(@PathVariable Long id,@RequestHeader("Authorization") String header) {
+	public ResponseEntity<Map<String,String>> deleteproduct(@PathVariable Long id,@RequestHeader("Authorization") String header) {
 		String token = header.substring(7);
 		String email = jwtutil.extractEmail(token);
 		User user = UserServ.getuserbyemail(email);
 		serv.deleteproduct(id,user);
-		return "product deleted";
+		return ResponseEntity.ok(Map.of("Message","Item deleted"));
 	}
 	
 	@GetMapping("/my") 
